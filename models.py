@@ -1,14 +1,12 @@
 import torch
 
-
-
 class ImageCategoricalPredictor(torch.nn.Module):
     def __init__(self, image_shape, output_dim):
         super().__init__()
-        self.conv1 = torch.nn.Conv2d(3, 6, 5, stride=1)
-        self.conv2 = torch.nn.Conv2d(6, 9, 5, stride=1)
-        self.conv3 = torch.nn.Conv2d(9, 12, 5, stride=1)
-        flattened_dim = 2 * (image_shape[0]-4-2-4-2-4-2) * (image_shape[1]-4-2-4-2-4-2) * 12
+        self.conv1 = torch.nn.Conv2d(3, 20, 5, stride=1)
+        self.conv2 = torch.nn.Conv2d(20, 40, 5, stride=1)
+        self.conv3 = torch.nn.Conv2d(40, 60, 5, stride=1)
+        flattened_dim = 2 * (image_shape[0]-4-2-4-2-4-2) * (image_shape[1]-4-2-4-2-4-2) * 60
         self.linear1 = torch.nn.Linear(flattened_dim, 100)
         self.linear2 = torch.nn.Linear(100, 2)
         self.max_pool = torch.nn.MaxPool2d(3, stride=1)

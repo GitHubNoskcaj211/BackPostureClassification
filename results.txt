@@ -1,0 +1,107 @@
+UWB Model:
+Task1
+Training Loss average: 0.19039351642131805
+Training Loss std: 0.037916789271709404
+Training Good Posture Accuracy average: 0.9238659143447876
+Training Good Posture Accuracy std: 0.03759650120998854
+Training Bad Posture Accuracy average: 0.9475409150123596
+Training Bad Posture Accuracy std: 0.021793730109709655
+Testing Loss average: 1.102882409095764
+Testing Loss std: 0.5814868394502101
+Testing Good Posture Accuracy average: 0.4699324518442154
+Testing Good Posture Accuracy std: 0.20089178611965022
+Testing Bad Posture Accuracy average: 0.6082656413316727
+Testing Bad Posture Accuracy std: 0.26923840621081446
+Task2
+Training Loss average: 0.2955882363021374
+Training Loss std: 0.028580812458451545
+Training Good Posture Accuracy average: 0.8724432215094566
+Training Good Posture Accuracy std: 0.041870543166495466
+Training Bad Posture Accuracy average: 0.9064442068338394
+Training Bad Posture Accuracy std: 0.02004676815837162
+Testing Loss average: 0.9502125531435013
+Testing Loss std: 0.34006626172316107
+Testing Good Posture Accuracy average: 0.45879271160811186
+Testing Good Posture Accuracy std: 0.36693796675870394
+Testing Bad Posture Accuracy average: 0.5296528432518244
+Testing Bad Posture Accuracy std: 0.3302196178829503
+Task3
+Training Loss average: 0.20156528949737548
+Training Loss std: 0.030388023760399126
+Training Good Posture Accuracy average: 0.8962952494621277
+Training Good Posture Accuracy std: 0.04002862475230114
+Training Bad Posture Accuracy average: 0.9531111240386962
+Training Bad Posture Accuracy std: 0.007949386060981221
+Testing Loss average: 1.187106692790985
+Testing Loss std: 0.37137399826343737
+Testing Good Posture Accuracy average: 0.39768539667129515
+Testing Good Posture Accuracy std: 0.30335982799346906
+Testing Bad Posture Accuracy average: 0.596473228931427
+Testing Bad Posture Accuracy std: 0.17310031883480584
+Task4
+Training Loss average: 0.2855730950832367
+Training Loss std: 0.038146138191223145
+Training Good Posture Accuracy average: 0.9088798761367798
+Training Good Posture Accuracy std: 0.035564541816711426
+Training Bad Posture Accuracy average: 0.8764367997646332
+Training Bad Posture Accuracy std: 0.04022988677024841
+Testing Loss average: 1.443096399307251
+Testing Loss std: 0.05579483509063721
+Testing Good Posture Accuracy average: 0.3939802385866642
+Testing Good Posture Accuracy std: 0.2987421415746212
+Testing Bad Posture Accuracy average: 0.5203108489513397
+Testing Bad Posture Accuracy std: 0.19559821486473083
+
+Camera Model:
+Task1
+Training Loss average: 0.38919408321380616
+Training Loss std: 0.2492256578125244
+Training Good Posture Accuracy average: 0.726362070441246
+Training Good Posture Accuracy std: 0.2804235555034841
+Training Bad Posture Accuracy average: 0.9634836316108704
+Training Bad Posture Accuracy std: 0.021854831850517772
+Testing Loss average: 0.3729694068431854
+Testing Loss std: 0.27486699842251183
+Testing Good Posture Accuracy average: 0.6868690580129624
+Testing Good Posture Accuracy std: 0.3192928672768271
+Testing Bad Posture Accuracy average: 0.9720177769660949
+Testing Bad Posture Accuracy std: 0.041265290332775095
+Task2
+Training Loss average: 0.591313324868679
+Training Loss std: 0.023694602698323904
+Training Good Posture Accuracy average: 0.968569204211235
+Training Good Posture Accuracy std: 0.015524164513977751
+Training Bad Posture Accuracy average: 0.40778515115380287
+Training Bad Posture Accuracy std: 0.05698814463548002
+Testing Loss average: 0.6229306794703007
+Testing Loss std: 0.2430511788861358
+Testing Good Posture Accuracy average: 0.9905819818377495
+Testing Good Posture Accuracy std: 0.013146184579666532
+Testing Bad Posture Accuracy average: 0.3969421982765198
+Testing Bad Posture Accuracy std: 0.3633399897825114
+Task3
+Training Loss average: 0.666020667552948
+Training Loss std: 0.01011918475358389
+Training Good Posture Accuracy average: 0.40234018564224244
+Training Good Posture Accuracy std: 0.07193473615357031
+Training Bad Posture Accuracy average: 0.7986484408378601
+Training Bad Posture Accuracy std: 0.03841961779255428
+Testing Loss average: 0.7060719847679138
+Testing Loss std: 0.05992719630002525
+Testing Good Posture Accuracy average: 0.3859100878238678
+Testing Good Posture Accuracy std: 0.3344972314248211
+Testing Bad Posture Accuracy average: 0.7868605256080627
+Testing Bad Posture Accuracy std: 0.22408471995824203
+Task4
+Training Loss average: 0.6685698330402374
+Training Loss std: 0.02328231930732727
+Training Good Posture Accuracy average: 0.44611509144306183
+Training Good Posture Accuracy std: 0.09301535785198212
+Training Bad Posture Accuracy average: 0.8945099115371704
+Training Bad Posture Accuracy std: 0.09684455394744873
+Testing Loss average: 0.735695868730545
+Testing Loss std: 0.053094178438186646
+Testing Good Posture Accuracy average: 0.22371967136859894
+Testing Good Posture Accuracy std: 0.22371967136859894
+Testing Bad Posture Accuracy average: 0.8419302701950073
+Testing Bad Posture Accuracy std: 0.15028762817382812

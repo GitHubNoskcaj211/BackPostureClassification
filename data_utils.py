@@ -15,8 +15,8 @@ def convert_uwb_json_to_tensor(file_number):
         starting_time = int(json_file[0]['timestamp'])
         ending_time = int(json_file[-1]['timestamp'])
 
-        tensor = torch.empty((ending_time - starting_time, 12), dtype=torch.float32) # [distance, direction vector] per sensor
-        sum_per_sensor = np.zeros((3, 4))
+        tensor = torch.empty((ending_time - starting_time, 18), dtype=torch.float32) # [distance, direction vector, elevation, azimuth] per sensor
+        sum_per_sensor = np.zeros((3, 6))
         num_hits_per_sensor = [0, 0, 0]
         current_time = starting_time
         for datum in json_file:
@@ -29,7 +29,7 @@ def convert_uwb_json_to_tensor(file_number):
                 average_per_sensor = averaging @ sum_per_sensor
                 average_tensor = torch.from_numpy(average_per_sensor)
                 tensor[current_time - starting_time] = average_tensor.reshape(-1)
-                sum_per_sensor = np.zeros((3, 4))
+                sum_per_sensor = np.zeros((3, 6))
                 num_hits_per_sensor = [0, 0, 0]
                 current_time = datum_time
 
@@ -39,21 +39,28 @@ def convert_uwb_json_to_tensor(file_number):
             sum_per_sensor[sensor_index, 1] += datum['direction'][0]
             sum_per_sensor[sensor_index, 2] += datum['direction'][1]
             sum_per_sensor[sensor_index, 3] += datum['direction'][2]
+            sum_per_sensor[sensor_index, 4] += datum['elevation']
+            sum_per_sensor[sensor_index, 5] += datum['azimuth']
         torch.save(tensor, f'{file_base}.tensor')
 
 # Camera 1 (computer): 1620 x 1080 | 30 fps
 # Camera 2 (phone): 1920 x 1080 | 29.95 fps
 # TODO Fix the framerates (though it is only going to be off by a maximum of 12 frames which is close enough)... the data cleaning is likely more off than this
 def convert_camera_to_tensor(file_number):
+    frame_rate = 1
+    original_frame_rate = 30
+    skip = int(original_frame_rate / frame_rate)
     computer_path = f'{dataset_path}Computer_file{file_number:03}.mov'
     phone_path = f'{dataset_path}Phone_file{file_number:03}.mov'
     computer_video = cv2.VideoCapture(computer_path)
     phone_video = cv2.VideoCapture(phone_path)
     computer_length = int(computer_video.get(cv2.CAP_PROP_FRAME_COUNT))
     phone_length = int(phone_video.get(cv2.CAP_PROP_FRAME_COUNT))
-    data_length = min(phone_length, computer_length) - 30
+    data_length = int((min(phone_length, computer_length) - 30) / skip)
     tensor = torch.empty((data_length, 6, 54, 96), dtype=torch.int8, device=mps_device)
     for ii in tqdm(range(data_length)):
+        computer_video.set(cv2.CAP_PROP_POS_FRAMES, ii * skip)
+        phone_video.set(cv2.CAP_PROP_POS_FRAMES, ii * skip)
         computer_ret, computer_frame = computer_video.read()
         phone_ret, phone_frame = phone_video.read()
         if not computer_ret:
@@ -67,15 +74,12 @@ def convert_camera_to_tensor(file_number):
         phone_frame = np.transpose(phone_frame, [2, 0, 1])
         reduced_computer_frame = arr_reduced = block_reduce(computer_frame, block_size=20, func=np.mean, cval=np.mean(computer_frame))
         reduced_phone_frame = arr_reduced = block_reduce(phone_frame, block_size=20, func=np.mean, cval=np.mean(phone_frame))
-        tensor[ii,:3] = torch.from_numpy(reduced_computer_frame, device=mps_device)
-        tensor[ii,3:] = torch.from_numpy(reduced_phone_frame, device=mps_device)
+        tensor[ii,:3] = torch.from_numpy(reduced_computer_frame)
+        tensor[ii,3:] = torch.from_numpy(reduced_phone_frame)
     
-    torch.save(tensor, f'{dataset_path}video{file_number:03}.tensor')
+    torch.save(tensor, f'{dataset_path}reduced_video{file_number:03}.tensor')
     phone_video.release()
     computer_video.release()
-
-for ii in range(1, 41):
-    convert_camera_to_tensor(ii)
 
 bad_posture_tensor = torch.tensor([0, 1], dtype=torch.float32, device=mps_device)
 good_posture_tensor = torch.tensor([1, 0], dtype=torch.float32, device=mps_device)
@@ -104,17 +108,17 @@ def get_data_uwb_train_test_split(train_file_numbers, test_file_numbers):
     return training_data, testing_data
 
 def get_data_camera_train_test_split(train_file_numbers, test_file_numbers):
-    # assert not bool(set(train_file_numbers) & set(test_file_numbers)), 'Testing on data that is also in training set!'
+    assert not bool(set(train_file_numbers) & set(test_file_numbers)), 'Testing on data that is also in training set!'
     training_data = []
     for file_number in train_file_numbers:
-        train_tensor = torch.load(f'{dataset_path}video{file_number:03}.tensor').to(mps_device).to(torch.float32) / 255.0
+        train_tensor = torch.load(f'{dataset_path}reduced_video{file_number:03}.tensor').to(mps_device).to(torch.float32) / 255.0
         train_label = file_number_to_label_map[file_number]
         for ii in range(train_tensor.shape[0]):
             training_data.append((train_tensor[ii], train_label))
 
     testing_data = []
     for file_number in test_file_numbers:
-        test_tensor = torch.load(f'{dataset_path}video{file_number:03}.tensor').to(mps_device).to(torch.float32) / 255.0
+        test_tensor = torch.load(f'{dataset_path}reduced_video{file_number:03}.tensor').to(mps_device).to(torch.float32) / 255.0
         test_label = file_number_to_label_map[file_number]
         for ii in range(test_tensor.shape[0]):
             testing_data.append((test_tensor[ii], test_label))
